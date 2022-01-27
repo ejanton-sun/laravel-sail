@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+use App\Http\Controllers\LoginController;
+
+Route::get('login/{provider}', [LoginController::class, 'redirectToProvider']);
+Route::get('login/{provider}/callback', [LoginController::class, 'handleProviderCallback']);

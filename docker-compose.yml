@@ -3,7 +3,7 @@ version: '3'
 services:
     laravel.test:
         build:
-            context: ./vendor/laravel/sail/runtimes/8.1
+            context: ./docker/8.1
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
@@ -25,7 +25,6 @@ services:
             - mysql
             - redis
             - meilisearch
-            - selenium
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -38,7 +37,7 @@ services:
             MYSQL_PASSWORD: '${DB_PASSWORD}'
             MYSQL_ALLOW_EMPTY_PASSWORD: 1
         volumes:
-            - 'sailmysql:/var/lib/mysql'
+            - 'sail-mysql:/var/lib/mysql'
         networks:
             - sail
         healthcheck:
@@ -50,7 +49,7 @@ services:
         ports:
             - '${FORWARD_REDIS_PORT:-6379}:6379'
         volumes:
-            - 'sailredis:/data'
+            - 'sail-redis:/data'
         networks:
             - sail
         healthcheck:
@@ -59,11 +58,10 @@ services:
             timeout: 5s
     meilisearch:
         image: 'getmeili/meilisearch:latest'
-        platform: linux/x86_64
         ports:
             - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'
         volumes:
-            - 'sailmeilisearch:/data.ms'
+            - 'sail-meilisearch:/data.ms'
         networks:
             - sail
         healthcheck:
@@ -77,19 +75,13 @@ services:
             - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025'
         networks:
             - sail
-    # selenium:
-    #     image: 'selenium/standalone-chrome'
-    #     volumes:
-    #         - '/dev/shm:/dev/shm'
-    #     networks:
-    #         - sail
 networks:
     sail:
         driver: bridge
 volumes:
-    sailmysql:
+    sail-mysql:
         driver: local
-    sailredis:
+    sail-redis:
         driver: local
-    sailmeilisearch:
+    sail-meilisearch:
         driver: local
