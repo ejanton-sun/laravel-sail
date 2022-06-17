@@ -13,8 +13,9 @@
     <!-- Fonts -->
     @yield('links')
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.4.1/jquery.jscroll.min.js"></script>
     @yield('styles')
 
 </head>
@@ -24,5 +25,5 @@
 </body>
 <script src="{{ asset('js/app.js') }}" defer></script>
 @yield('scripts')
-
+@include('sweetalert::alert')
 </html>

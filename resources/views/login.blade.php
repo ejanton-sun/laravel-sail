@@ -1,5 +1,8 @@
 @extends('layouts.master')
 @section('title','Login')
+@section('links')
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+@endsection
 @section('styles')
 <style>
     body {
@@ -46,10 +49,30 @@
         </div>
         <div class="p-5 md:flex-1">
             <h3 class="my-4 text-2xl font-semibold text-white">Account Login</h3>
-            <form action="#" class="flex flex-col space-y-5">
+            @if (count($errors))
+            <div class="flex gap-4 bg-red-500 p-4 rounded-md">
+                <div class="w-max">
+                    <div class="h-10 w-10 flex rounded-full bg-gradient-to-b from-red-100 to-red-300 text-red-700">
+                        <span class="material-icons material-icons-outlined m-auto"
+                            style="font-size:20px">gpp_bad</span>
+                    </div>
+                </div>
+                <div class="space-y-1 text-sm">
+                    <h6 class="font-medium text-white">Holy mole guacamole</h6>
+                    @error('email')
+                    <p class="text-red-100 leading-tight">{{ $message }}</p>
+                    @enderror
+                    @error('password')
+                    <p class="text-red-100 leading-tight">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+            @endif
+            <form action="{{ route('signin.store') }}" method="POST" class="flex flex-col space-y-5">
+                @csrf
                 <div class="flex flex-col space-y-1">
                     <label for="email" class="text-sm font-semibold text-white">Email address</label>
-                    <input type="email" id="email" autofocus
+                    <input type="email" name="email" id="email" autofocus
                         class="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200" />
                 </div>
                 <div class="flex flex-col space-y-1">
@@ -57,7 +80,7 @@
                         <label for="password" class="text-sm font-semibold text-white">Password</label>
                         <a href="#" class="text-sm text-white hover:underline focus:text-white">Forgot Password?</a>
                     </div>
-                    <input type="password" id="password"
+                    <input type="password" name="password" id="password"
                         class="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200" />
                 </div>
                 <div class="flex items-center space-x-2">
@@ -78,7 +101,7 @@
                         <span class="h-px bg-gray-400 w-14"></span>
                     </span>
                     <div class="flex flex-col space-y-4">
-                        <a href="#"
+                        <a href="{{ route('signin.github') }}"
                             class="bg-white flex items-center justify-center px-4 py-2 space-x-2 transition-colors duration-300 border border-gray-800 rounded-md group hover:bg-gray-800 focus:outline-none">
                             <span>
                                 <svg class="w-5 h-5 text-gray-800 fill-current group-hover:text-white"
